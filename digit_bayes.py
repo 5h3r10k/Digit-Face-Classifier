@@ -43,7 +43,9 @@ def load_ascii_image(file_path):
     with open(file_path, 'r') as file:
         ascii_image = file.readlines()
 
-    return simple_on_feature(ascii_image)
+    return np.concatenate([
+        simple_grid_on_feature(ascii_image, (2, 2)),
+    ])
 
 def simple_on_feature(image):
     '''
@@ -56,6 +58,29 @@ def simple_on_feature(image):
         for j in range(width):
             if image[i][j] in ON:
                 output[i* width + j] = 1
+    return output
+
+def grid_count_on_feature(image, grid_dim):
+    '''
+    Returns a feature vector that counts the number of on pixels in each grid cell.
+    The image is divided into grid cells of size grid_length x grid_width.
+    '''
+    size = len(image)
+    width = len(image[0].rstrip('\n'))
+    if size % grid_dim[0] != 0 or width % grid_dim[1] != 0:
+        raise ValueError('Grid dimensions do not divide the image dimensions evenly.')
+    num_rows = size // grid_dim[0]
+    num_cols = width // grid_dim[1]
+    num_cells = num_rows * num_cols
+    output = np.zeros(num_cells, dtype=int)
+    for i in range(num_rows):
+        for j in range(num_cols):
+            count = 0
+            for k in range(grid_dim[0]):
+                for l in range(grid_dim[1]):
+                    if image[i*grid_dim[0] + k][j*grid_dim[1] + l] in ON:
+                        count += 1
+            output[i*num_cols + j] = count
     return output
 
 def load_labels(file_path):
@@ -86,6 +111,10 @@ test_data, test_labels = load_dataset(TEST_IMAGES_PATH, TEST_LABELS_PATH)
 # Print the shapes of the data
 print(train_data.shape)
 print(train_labels.shape)
+
+for i in range(10):
+    print(train_labels[i])
+    print(train_data[i])
 
 # Initialize and train the classifier
 digit_nb = NaiveBayesClassifier()
