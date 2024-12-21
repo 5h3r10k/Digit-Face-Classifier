@@ -44,7 +44,7 @@ def load_ascii_image(file_path):
         ascii_image = file.readlines()
 
     return np.concatenate([
-        simple_grid_on_feature(ascii_image, (2, 2)),
+        grid_count_on_feature(ascii_image, (7, 7)),
     ])
 
 def simple_on_feature(image):
