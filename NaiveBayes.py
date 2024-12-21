@@ -64,7 +64,6 @@ class NaiveBayesClassifier:
 
         # return the class with the highest posterior probability
         return max(posteriors, key=posteriors.get)
-
     
     def predict_batch(self, batch_data):
         """
@@ -77,3 +76,35 @@ class NaiveBayesClassifier:
 
         # Predict the class labels for each data sample in the batch
         return [self.predict(data) for data in batch_data]
+    
+    def accuracy(self, test_data, test_labels):
+        """
+        Calculate the accuracy of the classifier.
+        Parameters:
+        - test_data (np.array): Test data.
+        - test_labels (np.array): Test labels.
+        Returns:
+        - float: Accuracy of the classifier.
+        """
+
+        # Predict the class labels for the test data
+        predictions = self.predict_batch(test_data)
+
+        # Calculate the accuracy
+        return np.mean(predictions == test_labels)
+    
+    def standard_deviation(self, test_data, test_labels):
+        """
+        Calculate the standard deviation of the classifier.
+        Parameters:
+        - test_data (np.array): Test data.
+        - test_labels (np.array): Test labels.
+        Returns:
+        - float: Standard deviation of the classifier.
+        """
+
+        # Predict the class labels for the test data
+        predictions = self.predict_batch(test_data)
+
+        # Calculate the standard deviation
+        return np.std(predictions == test_labels)

@@ -7,6 +7,7 @@ PIXEL = '#'
 EDGE = '+'
 
 DATA_DIR = 'data/'
+PLOTS_DIR = 'plots/'
 
 SRC_DIGIT_TRAINING_IMAGES_FILE = DATA_DIR + 'digitdata/trainingimages'
 SRC_DIGIT_TEST_IMAGES_FILE = DATA_DIR + 'digitdata/testimages'
